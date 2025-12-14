@@ -887,6 +887,19 @@ const App = () => {
               </p>
             </div>
           </div>
+          <div className="flex justify-center mb-8">
+            <a
+              href="https://moit.gov.vn/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img
+                src="/images/bo-cong-thuong.png"
+                alt="Đã thông báo Bộ Công Thương"
+                className="h-20 w-auto object-contain"
+              />
+            </a>
+          </div>
           <div className="border-t border-gray-100 pt-8 text-center text-sm text-gray-400">
             © 2025 Boxie Gift. Tất cả quyền được bảo lưu.
           </div>
