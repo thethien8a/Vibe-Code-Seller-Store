@@ -1,0 +1,170 @@
+/* Global styles for Boxie Gift (loaded via index.html) */
+
+/* Optional: hide scrollbars for elements using `scrollbar-hide` */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Ripple Animation (used by click effects) */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+/* ===== Hero background effects ===== */
+
+.hero-mesh {
+  background:
+    radial-gradient(circle at 18% 24%, rgba(236, 72, 153, 0.30), transparent 48%),
+    radial-gradient(circle at 82% 34%, rgba(249, 168, 212, 0.38), transparent 55%),
+    radial-gradient(circle at 42% 86%, rgba(253, 242, 248, 0.95), transparent 55%);
+  background-size: 140% 140%;
+  animation: hero-mesh-pan 18s ease-in-out infinite;
+  mix-blend-mode: overlay;
+  opacity: 0.95;
+}
+
+@keyframes hero-mesh-pan {
+  0% {
+    background-position: 0% 0%;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    background-position: 100% 100%;
+    transform: translate3d(0, -10px, 0) scale(1.02);
+  }
+  100% {
+    background-position: 0% 0%;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.hero-shine {
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.22) 20%,
+    rgba(255, 255, 255, 0) 45%
+  );
+  background-size: 220% 220%;
+  animation: hero-shine 9s ease-in-out infinite;
+  mix-blend-mode: overlay;
+  opacity: 0.7;
+}
+
+@keyframes hero-shine {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+.hero-interactive {
+  --spot-x: 50%;
+  --spot-y: 50%;
+  --spot-opacity: 0;
+  --parallax-x: 0px;
+  --parallax-y: 0px;
+}
+
+.hero-spotlight {
+  opacity: 0;
+}
+
+.hero-photo {
+  transform: translate3d(0, 0, 0) scale(1.02);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-spotlight {
+    background: radial-gradient(
+      520px circle at var(--spot-x) var(--spot-y),
+      rgba(236, 72, 153, 0.28) 0%,
+      rgba(255, 255, 255, 0.12) 30%,
+      rgba(255, 255, 255, 0.0) 60%
+    );
+    opacity: var(--spot-opacity);
+    transition: opacity 220ms ease;
+  }
+
+  .hero-photo {
+    transform: translate3d(var(--parallax-x), var(--parallax-y), 0) scale(1.04);
+    transition: transform 160ms ease-out;
+    will-change: transform;
+  }
+}
+
+.hero-blob {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.hero-blob--a {
+  background: rgba(236, 72, 153, 0.35);
+  top: -180px;
+  left: -200px;
+  animation: hero-blob-a 14s ease-in-out infinite;
+}
+
+.hero-blob--b {
+  background: rgba(244, 63, 94, 0.22);
+  bottom: -210px;
+  right: -210px;
+  animation: hero-blob-b 16s ease-in-out infinite;
+}
+
+.hero-blob--c {
+  background: rgba(251, 207, 232, 0.60);
+  top: 40%;
+  left: 55%;
+  width: 340px;
+  height: 340px;
+  animation: hero-blob-c 20s ease-in-out infinite;
+}
+
+@keyframes hero-blob-a {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(70px, 40px) scale(1.08);
+  }
+}
+
+@keyframes hero-blob-b {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-60px, -30px) scale(1.06);
+  }
+}
+
+@keyframes hero-blob-c {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-40px, 30px) scale(1.08);
+  }
+}
