@@ -1,8 +1,20 @@
-import { GoogleGenAI } from "@google/genai";
 import { PRODUCTS } from "../constants";
 
 type GeminiRequestBody = {
   userQuery?: string;
+};
+
+type GeminiGenerateContentResponse = {
+  candidates?: Array<{
+    content?: {
+      parts?: Array<{ text?: string }>;
+    };
+  }>;
+  error?: {
+    message?: string;
+    status?: string;
+    code?: number;
+  };
 };
 
 function buildPrompt(userQuery: string): string {
@@ -35,6 +47,13 @@ function safeJsonParse(value: unknown): unknown {
   }
 }
 
+function extractTextFromGeminiResponse(data: GeminiGenerateContentResponse): string | undefined {
+  const parts = data?.candidates?.[0]?.content?.parts;
+  if (!Array.isArray(parts)) return undefined;
+  const text = parts.map((p) => p?.text || "").join("").trim();
+  return text || undefined;
+}
+
 export default async function handler(req: any, res: any) {
   if (req.method === "OPTIONS") {
     res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -64,15 +83,41 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const ai = new GoogleGenAI({ apiKey });
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
-      contents: buildPrompt(userQuery),
-    });
+    // Avoid SDK/runtime issues on serverless by calling the Gemini REST API directly.
+    const geminiResponse = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": apiKey,
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [{ text: buildPrompt(userQuery) }],
+            },
+          ],
+        }),
+      }
+    );
+
+    const data = (await geminiResponse.json()) as GeminiGenerateContentResponse;
+
+    if (!geminiResponse.ok) {
+      console.error("Gemini Error:", data?.error || data);
+      res.status(geminiResponse.status).json({
+        error:
+          data?.error?.message ||
+          data?.error?.status ||
+          "Gemini request failed",
+      });
+      return;
+    }
 
     res.status(200).json({
       text:
-        response.text ||
+        extractTextFromGeminiResponse(data) ||
         "Oops, I got distracted by a butterfly! Can you ask again? 🦋",
     });
   } catch (error) {
