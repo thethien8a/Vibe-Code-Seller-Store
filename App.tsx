@@ -1,16 +1,52 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ShoppingBag, Menu, X, Heart, Star, MapPin, Phone, Mail, Instagram, Facebook, ArrowRight, Truck, CheckCircle, Clock } from 'lucide-react';
+import { ShoppingBag, Menu, X, Heart, Star, MapPin, Phone, Mail, Facebook, ArrowRight, Truck, CheckCircle, Clock, ChevronDown, ExternalLink } from 'lucide-react';
 import { Product, CartItem, ViewState } from './types';
 import { PRODUCTS, BLOG_POSTS, REVIEWS } from './constants';
 import { ProductCard } from './components/ProductCard';
 import { Button } from './components/Button';
 import { FloatingFeatures } from './components/FloatingFeatures';
 
+// Custom Threads Icon Component
+const ThreadsIcon = ({ className }: { className?: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 16 16"
+    fill="currentColor"
+    className={className}
+  >
+    <path d="M6.321 6.016c-.27-.18-1.166-.802-1.166-.802.756-1.081 1.753-1.502 3.132-1.502.975 0 1.803.327 2.394.948s.928 1.509 1.005 2.644q.492.207.905.484c1.109.745 1.719 1.86 1.719 3.137 0 2.716-2.226 5.075-6.256 5.075C4.594 16 1 13.987 1 7.994 1 2.034 4.482 0 8.044 0 9.69 0 13.55.243 15 5.036l-1.36.353C12.516 1.974 10.163 1.43 8.006 1.43c-3.565 0-5.582 2.171-5.582 6.79 0 4.143 2.254 6.343 5.63 6.343 2.777 0 4.847-1.443 4.847-3.556 0-1.438-1.208-2.127-1.27-2.127-.236 1.234-.868 3.31-3.644 3.31-1.618 0-3.013-1.118-3.013-2.582 0-2.09 1.984-2.847 3.55-2.847.586 0 1.294.04 1.663.114 0-.637-.54-1.728-1.9-1.728-1.25 0-1.566.405-1.967.868ZM8.716 8.19c-2.04 0-2.304.87-2.304 1.416 0 .878 1.043 1.168 1.6 1.168 1.02 0 2.067-.282 2.232-2.423a6.2 6.2 0 0 0-1.528-.161"/>
+  </svg>
+);
+
+const PARTNERS = [
+  {
+    name: 'Sunny Bunny',
+    href: 'https://sunnybunny.store/',
+    imageSrc: '/images/doi-tac-1.jpg',
+    domain: 'sunnybunny.store',
+  },
+  {
+    name: 'Moimoifruit – Mix vị ưng – Fresh quá chừng',
+    href: 'https://moimoifruit.store/',
+    imageSrc: '/images/doi-tac-2.jpg',
+    domain: 'moimoifruit.store',
+  },
+  {
+    name: 'socketzone.store – Home Decor',
+    href: 'https://socketzone.store/',
+    imageSrc: '/images/doi-tac-3.jpg',
+    domain: 'socketzone.store',
+  },
+] as const;
+
 const App = () => {
   const [view, setView] = useState<ViewState>('home');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isPartnersOpen, setIsPartnersOpen] = useState(false);
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [filterMaxPrice, setFilterMaxPrice] = useState<number | null>(null);
   const [checkoutStep, setCheckoutStep] = useState(1);
@@ -51,7 +87,7 @@ const App = () => {
   // Navigation Components
   const NavLink = ({ to, children }: { to: ViewState, children: React.ReactNode }) => (
     <button 
-      onClick={() => { setView(to); setIsMobileMenuOpen(false); }}
+      onClick={() => { setView(to); setIsMobileMenuOpen(false); setIsPartnersOpen(false); }}
       className={`font-semibold hover:text-primary-500 transition-colors ${view === to ? 'text-primary-600' : 'text-gray-600'}`}
     >
       {children}
@@ -663,11 +699,56 @@ const App = () => {
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm lg:text-base">
             <NavLink to="home">Trang chủ</NavLink>
             <NavLink to="shop">Cửa hàng</NavLink>
             <NavLink to="about">Về chúng tôi</NavLink>
             <NavLink to="blog">Blog</NavLink>
+            <div className="relative group">
+              <button
+                type="button"
+                className="font-semibold text-gray-600 hover:text-primary-500 transition-colors inline-flex items-center gap-1.5 group-hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-300/70 rounded-lg px-1"
+              >
+                Đối tác khác
+                <ChevronDown
+                  size={16}
+                  className="mt-[1px] opacity-70 transition-all duration-200 group-hover:opacity-100 group-hover:-rotate-180 group-focus-within:-rotate-180"
+                />
+              </button>
+
+              <div className="absolute right-0 top-full pt-4 z-50 opacity-0 invisible translate-y-1 transition-all duration-200 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-focus-within:opacity-100 group-focus-within:visible group-focus-within:translate-y-0">
+                <div className="w-[360px] rounded-2xl border border-primary-100 bg-white shadow-xl p-3">
+                  <div className="px-2 pb-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                    Đối tác khác
+                  </div>
+                  <div className="space-y-1">
+                    {PARTNERS.map((partner) => (
+                      <a
+                        key={partner.href}
+                        href={partner.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="flex items-center gap-3 p-2 rounded-xl hover:bg-primary-50 transition-colors group/partner"
+                      >
+                        <img
+                          src={partner.imageSrc}
+                          alt={`Đối tác: ${partner.name}`}
+                          className="w-12 h-12 rounded-xl object-cover border border-primary-100 bg-primary-50 shrink-0"
+                          loading="lazy"
+                        />
+                        <div className="min-w-0">
+                          <div className="font-semibold text-gray-800 leading-tight line-clamp-1 group-hover/partner:text-primary-700">
+                            {partner.name}
+                          </div>
+                          <div className="text-xs text-gray-500 truncate">{partner.domain}</div>
+                        </div>
+                        <ExternalLink size={16} className="ml-auto text-gray-400 shrink-0 group-hover/partner:text-primary-500" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
             <NavLink to="contact">Liên hệ</NavLink>
           </nav>
 
@@ -684,7 +765,7 @@ const App = () => {
                 </span>
               )}
             </button>
-            <button className="md:hidden p-2 text-gray-600" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+            <button className="md:hidden p-2 text-gray-600" onClick={() => { setIsMobileMenuOpen(v => !v); setIsPartnersOpen(false); }}>
               {isMobileMenuOpen ? <X size={24}/> : <Menu size={24}/>}
             </button>
           </div>
@@ -697,6 +778,45 @@ const App = () => {
             <NavLink to="shop">Cửa hàng</NavLink>
             <NavLink to="about">Về chúng tôi</NavLink>
             <NavLink to="blog">Blog</NavLink>
+            <div>
+              <button
+                type="button"
+                className="w-full flex items-center justify-between font-semibold text-gray-600 hover:text-primary-500 transition-colors"
+                onClick={() => setIsPartnersOpen(v => !v)}
+              >
+                <span>Đối tác khác</span>
+                <ChevronDown size={18} className={`transition-transform duration-200 ${isPartnersOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {isPartnersOpen && (
+                <div className="mt-3 ml-1 pl-3 border-l border-primary-100/80 flex flex-col gap-2">
+                  {PARTNERS.map((partner) => (
+                    <a
+                      key={partner.href}
+                      href={partner.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="flex items-center gap-3 p-2 rounded-xl hover:bg-primary-50 transition-colors"
+                      onClick={() => { setIsMobileMenuOpen(false); setIsPartnersOpen(false); }}
+                    >
+                      <img
+                        src={partner.imageSrc}
+                        alt={`Đối tác: ${partner.name}`}
+                        className="w-10 h-10 rounded-xl object-cover border border-primary-100 bg-primary-50 shrink-0"
+                        loading="lazy"
+                      />
+                      <div className="min-w-0">
+                        <div className="font-semibold text-gray-800 leading-tight line-clamp-1">
+                          {partner.name}
+                        </div>
+                        <div className="text-xs text-gray-500 truncate">{partner.domain}</div>
+                      </div>
+                      <ExternalLink size={16} className="ml-auto text-gray-400 shrink-0" />
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
             <NavLink to="contact">Liên hệ</NavLink>
           </div>
         )}
@@ -723,7 +843,13 @@ const App = () => {
               <h3 className="font-bold text-lg text-primary-600">Boxie Gift</h3>
               <p className="text-gray-500 text-sm">Lan tỏa niềm vui, từng hộp quà đáng yêu.</p>
               <div className="flex gap-4 text-gray-400">
-                <Instagram className="hover:text-primary-500 cursor-pointer" />
+                <a
+                  href="https://www.threads.com/@th.thn08"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <ThreadsIcon className="hover:text-primary-500 cursor-pointer" />
+                </a>
                 <a
                   href="https://www.facebook.com/profile.php?id=61581779467527"
                   target="_blank"
