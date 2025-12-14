@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ShoppingBag, Menu, X, Heart, Star, MapPin, Phone, Mail, Facebook, ArrowRight, Truck, CheckCircle, Clock, ChevronDown, ExternalLink } from 'lucide-react';
+import { ShoppingBag, Menu, X, Heart, Star, MapPin, Phone, Mail, Facebook, ArrowRight, Truck, CheckCircle, Clock, ChevronDown, ExternalLink, Package } from 'lucide-react';
 import { Product, CartItem, ViewState } from './types';
 import { PRODUCTS, BLOG_POSTS, REVIEWS } from './constants';
 import { ProductCard } from './components/ProductCard';
@@ -23,9 +23,9 @@ const ThreadsIcon = ({ className }: { className?: string }) => (
 const PARTNERS = [
   {
     name: 'Sunny Bunny',
-    href: 'https://sunnybunny.store/',
+    href: 'https://sunnybunnygiftbox.shop/',
     imageSrc: '/images/doi-tac-1.jpg',
-    domain: 'sunnybunny.store',
+    domain: 'sunnybunnygiftbox.shop',
   },
   {
     name: 'Moimoifruit – Mix vị ưng – Fresh quá chừng',
@@ -691,7 +691,7 @@ const App = () => {
           {/* Logo */}
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => setView('home')}>
              <div className="bg-primary-500 text-white p-2 rounded-xl">
-               <Heart size={20} fill="currentColor" />
+               <Package size={20} />
              </div>
              <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-primary-400" style={{ fontFamily: 'Quicksand, sans-serif' }}>
                Boxie Gift
