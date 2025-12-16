@@ -369,7 +369,7 @@ const App = () => {
               </div>
               <div>
                 <p className="font-bold">Địa chỉ</p>
-                <p>Gần Đại học Bách Khoa, Hà Nội</p>
+                <p>88 Mai Động, Hoàng Mai, Hà Nội</p>
               </div>
             </div>
             <div className="flex items-center gap-4 text-gray-700">
@@ -1055,15 +1055,22 @@ const App = () => {
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Thông tin giao hàng</h4>
-              <p className="text-sm text-gray-500 flex items-start gap-2">
-                <Truck size={16} className="mt-1 shrink-0" />
-                Miễn phí giao hàng khu vực Đại học Bách Khoa!
+              <h4 className="font-bold mb-4">Địa chỉ</h4>
+              <p className="text-sm text-gray-500 flex items-start gap-2 mb-2">
+                <MapPin size={16} className="mt-1 shrink-0" />
+                88 Mai Động, Hoàng Mai, Hà Nội
               </p>
-              <p className="text-sm text-gray-500 flex items-start gap-2 mt-2">
-                <Clock size={16} className="mt-1 shrink-0" />
-                Giao ngay trong ngày
-              </p>
+              <div className="rounded-xl overflow-hidden shadow-sm border border-gray-100 mb-4 h-32 relative">
+                <iframe
+                  src="https://maps.google.com/maps?q=88%20Mai%20%C4%90%E1%BB%99ng,%20Ho%C3%A0ng%20Mai,%20H%C3%A0%20N%E1%BB%99i&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  className="absolute inset-0"
+                ></iframe>
+              </div>
             </div>
           </div>
           <div className="flex justify-center mb-8">
