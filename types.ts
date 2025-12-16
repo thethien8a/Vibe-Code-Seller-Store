@@ -39,5 +39,6 @@ export interface BlogPost {
   title: string;
   excerpt: string;
   image: string;
+  link: string;
   date: string;
 }

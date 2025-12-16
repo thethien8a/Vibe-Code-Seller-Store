@@ -16,7 +16,7 @@ const ThreadsIcon = ({ className }: { className?: string }) => (
     fill="currentColor"
     className={className}
   >
-    <path d="M6.321 6.016c-.27-.18-1.166-.802-1.166-.802.756-1.081 1.753-1.502 3.132-1.502.975 0 1.803.327 2.394.948s.928 1.509 1.005 2.644q.492.207.905.484c1.109.745 1.719 1.86 1.719 3.137 0 2.716-2.226 5.075-6.256 5.075C4.594 16 1 13.987 1 7.994 1 2.034 4.482 0 8.044 0 9.69 0 13.55.243 15 5.036l-1.36.353C12.516 1.974 10.163 1.43 8.006 1.43c-3.565 0-5.582 2.171-5.582 6.79 0 4.143 2.254 6.343 5.63 6.343 2.777 0 4.847-1.443 4.847-3.556 0-1.438-1.208-2.127-1.27-2.127-.236 1.234-.868 3.31-3.644 3.31-1.618 0-3.013-1.118-3.013-2.582 0-2.09 1.984-2.847 3.55-2.847.586 0 1.294.04 1.663.114 0-.637-.54-1.728-1.9-1.728-1.25 0-1.566.405-1.967.868ZM8.716 8.19c-2.04 0-2.304.87-2.304 1.416 0 .878 1.043 1.168 1.6 1.168 1.02 0 2.067-.282 2.232-2.423a6.2 6.2 0 0 0-1.528-.161"/>
+    <path d="M6.321 6.016c-.27-.18-1.166-.802-1.166-.802.756-1.081 1.753-1.502 3.132-1.502.975 0 1.803.327 2.394.948s.928 1.509 1.005 2.644q.492.207.905.484c1.109.745 1.719 1.86 1.719 3.137 0 2.716-2.226 5.075-6.256 5.075C4.594 16 1 13.987 1 7.994 1 2.034 4.482 0 8.044 0 9.69 0 13.55.243 15 5.036l-1.36.353C12.516 1.974 10.163 1.43 8.006 1.43c-3.565 0-5.582 2.171-5.582 6.79 0 4.143 2.254 6.343 5.63 6.343 2.777 0 4.847-1.443 4.847-3.556 0-1.438-1.208-2.127-1.27-2.127-.236 1.234-.868 3.31-3.644 3.31-1.618 0-3.013-1.118-3.013-2.582 0-2.09 1.984-2.847 3.55-2.847.586 0 1.294.04 1.663.114 0-.637-.54-1.728-1.9-1.728-1.25 0-1.566.405-1.967.868ZM8.716 8.19c-2.04 0-2.304.87-2.304 1.416 0 .878 1.043 1.168 1.6 1.168 1.02 0 2.067-.282 2.232-2.423a6.2 6.2 0 0 0-1.528-.161" />
   </svg>
 );
 
@@ -86,7 +86,7 @@ const App = () => {
 
   // Navigation Components
   const NavLink = ({ to, children }: { to: ViewState, children: React.ReactNode }) => (
-    <button 
+    <button
       onClick={() => { setView(to); setIsMobileMenuOpen(false); setIsPartnersOpen(false); }}
       className={`font-semibold hover:text-primary-500 transition-colors ${view === to ? 'text-primary-600' : 'text-gray-600'}`}
     >
@@ -174,7 +174,7 @@ const App = () => {
           <div className="hero-blob hero-blob--b"></div>
           <div className="hero-blob hero-blob--c"></div>
           <div className="absolute inset-0 hero-spotlight pointer-events-none"></div>
-          
+
           <div className="container mx-auto px-6 relative z-10 grid md:grid-cols-2 gap-10 items-center">
             <div className="space-y-6">
               <span className="inline-block px-4 py-2 bg-white/80 backdrop-blur-sm rounded-full text-primary-600 font-bold text-sm tracking-widest uppercase shadow-sm">
@@ -215,7 +215,7 @@ const App = () => {
           <div className="container mx-auto px-6">
             <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Mua theo ngân sách 💰</h2>
             <div className="grid md:grid-cols-3 gap-6">
-              <div 
+              <div
                 onClick={() => { setFilterCategory('all'); setFilterMaxPrice(79000); setView('shop'); }}
                 className="group cursor-pointer rounded-3xl overflow-hidden relative h-64 shadow-md"
               >
@@ -224,7 +224,7 @@ const App = () => {
                   <h3 className="text-white text-2xl font-bold">Bình dân</h3>
                 </div>
               </div>
-              <div 
+              <div
                 onClick={() => { setFilterCategory('all'); setFilterMaxPrice(99000); setView('shop'); }}
                 className="group cursor-pointer rounded-3xl overflow-hidden relative h-64 shadow-md"
               >
@@ -233,7 +233,7 @@ const App = () => {
                   <h3 className="text-white text-2xl font-bold">Trung cấp</h3>
                 </div>
               </div>
-              <div 
+              <div
                 onClick={() => { setFilterCategory('all'); setFilterMaxPrice(120000); setView('shop'); }}
                 className="group cursor-pointer rounded-3xl overflow-hidden relative h-64 shadow-md"
               >
@@ -256,8 +256,8 @@ const App = () => {
               Dù là tặng crush, bestie, hay ngày "thưởng cho bản thân", chúng tôi gói ghém mỗi hộp bằng tình yêu.
             </p>
             <div className="flex gap-4 text-sm font-semibold text-primary-700">
-               <span className="flex items-center gap-1"><CheckCircle size={16}/> Sản phẩm được chọn lọc kỹ</span>
-               <span className="flex items-center gap-1"><CheckCircle size={16}/> Thư tay viết tay</span>
+              <span className="flex items-center gap-1"><CheckCircle size={16} /> Sản phẩm được chọn lọc kỹ</span>
+              <span className="flex items-center gap-1"><CheckCircle size={16} /> Thư tay viết tay</span>
             </div>
             <Button onClick={() => setView('about')} variant="outline">Đọc thêm</Button>
           </div>
@@ -269,18 +269,17 @@ const App = () => {
   const ShopView = () => (
     <div className="container mx-auto px-6 py-12 min-h-screen">
       <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">Tất cả sản phẩm</h1>
-      
+
       {/* Filters */}
       <div className="flex flex-wrap gap-2 justify-center mb-10">
         {['all', 'box', 'bouquet', 'custom', 'set'].map(cat => (
           <button
             key={cat}
             onClick={() => { setFilterCategory(cat); setFilterMaxPrice(null); }}
-            className={`px-6 py-2 rounded-full text-sm font-bold capitalize transition-all ${
-              filterCategory === cat 
-              ? 'bg-primary-500 text-white shadow-lg shadow-primary-200' 
-              : 'bg-white text-gray-600 hover:bg-gray-50'
-            }`}
+            className={`px-6 py-2 rounded-full text-sm font-bold capitalize transition-all ${filterCategory === cat
+                ? 'bg-primary-500 text-white shadow-lg shadow-primary-200'
+                : 'bg-white text-gray-600 hover:bg-gray-50'
+              }`}
           >
             {cat}
           </button>
@@ -298,40 +297,40 @@ const App = () => {
           <ProductCard key={p.id} product={p} onAddToCart={addToCart} />
         ))}
       </div>
-      
+
       {PRODUCTS.filter(p => {
         const matchesCategory = filterCategory === 'all' || p.category === filterCategory;
         const matchesMaxPrice = filterMaxPrice === null || p.price <= filterMaxPrice;
 
         return matchesCategory && matchesMaxPrice;
       }).length === 0 && (
-        <div className="text-center text-gray-400 py-20">
-          <p>Không tìm thấy sản phẩm nào trong danh mục này.</p>
-        </div>
-      )}
+          <div className="text-center text-gray-400 py-20">
+            <p>Không tìm thấy sản phẩm nào trong danh mục này.</p>
+          </div>
+        )}
     </div>
   );
 
   const AboutView = () => (
     <div className="container mx-auto px-6 py-12 max-w-4xl space-y-12 min-h-screen">
-       <div className="text-center space-y-4">
-         <h1 className="text-4xl font-bold text-gray-900">Câu chuyện của chúng tôi 🌸</h1>
-         <p className="text-xl text-primary-600 font-medium">Từ phòng ký túc xá đến tận cửa nhà bạn.</p>
-       </div>
-       <div className="bg-white p-8 rounded-3xl shadow-sm border border-primary-50 space-y-6 text-gray-700 leading-relaxed">
-         <p>
-           Chào bạn! Chúng tôi là <strong>Boxie Gift</strong>. Chúng tôi biết cuộc sống sinh viên rất bận rộn, và đôi khi bạn chỉ muốn thể hiện tình cảm với ai đó mà không tốn kém quá nhiều hoặc mất hàng giờ tìm kiếm món quà phù hợp.
-         </p>
-         <p>
-           Đó là lý do chúng tôi tạo ra Boxie. Chúng tôi tuyển chọn những món đồ đáng yêu nhất - từ văn phòng phẩm đến đồ ăn vặt và thú nhồi bông - và đóng gói đẹp đẽ để sẵn sàng tặng ngay khi chúng đến tay bạn.
-         </p>
-         <h3 className="text-2xl font-bold text-gray-900 mt-8">Cam kết của chúng tôi</h3>
-         <ul className="list-disc list-inside space-y-2 pl-4">
-           <li><strong>Tiết kiệm:</strong> Giá cả phù hợp với sinh viên.</li>
-           <li><strong>Nhanh chóng:</strong> Miễn phí giao hàng trong vòng 1km quanh Đại học Bách Khoa.</li>
-           <li><strong>Cá nhân hóa:</strong> Mỗi hộp đều có tùy chọn thư viết tay.</li>
-         </ul>
-       </div>
+      <div className="text-center space-y-4">
+        <h1 className="text-4xl font-bold text-gray-900">Câu chuyện của chúng tôi 🌸</h1>
+        <p className="text-xl text-primary-600 font-medium">Từ phòng ký túc xá đến tận cửa nhà bạn.</p>
+      </div>
+      <div className="bg-white p-8 rounded-3xl shadow-sm border border-primary-50 space-y-6 text-gray-700 leading-relaxed">
+        <p>
+          Chào bạn! Chúng tôi là <strong>Boxie Gift</strong>. Chúng tôi biết cuộc sống sinh viên rất bận rộn, và đôi khi bạn chỉ muốn thể hiện tình cảm với ai đó mà không tốn kém quá nhiều hoặc mất hàng giờ tìm kiếm món quà phù hợp.
+        </p>
+        <p>
+          Đó là lý do chúng tôi tạo ra Boxie. Chúng tôi tuyển chọn những món đồ đáng yêu nhất - từ văn phòng phẩm đến đồ ăn vặt và thú nhồi bông - và đóng gói đẹp đẽ để sẵn sàng tặng ngay khi chúng đến tay bạn.
+        </p>
+        <h3 className="text-2xl font-bold text-gray-900 mt-8">Cam kết của chúng tôi</h3>
+        <ul className="list-disc list-inside space-y-2 pl-4">
+          <li><strong>Tiết kiệm:</strong> Giá cả phù hợp với sinh viên.</li>
+          <li><strong>Nhanh chóng:</strong> Miễn phí giao hàng trong vòng 1km quanh Đại học Bách Khoa.</li>
+          <li><strong>Cá nhân hóa:</strong> Mỗi hộp đều có tùy chọn thư viết tay.</li>
+        </ul>
+      </div>
     </div>
   );
 
@@ -346,7 +345,9 @@ const App = () => {
               <span className="text-primary-500 font-bold text-sm mb-2 block">{post.date}</span>
               <h2 className="text-2xl font-bold text-gray-800 mb-4">{post.title}</h2>
               <p className="text-gray-600 mb-6">{post.excerpt}</p>
-              <Button variant="outline" size="sm">Đọc bài viết</Button>
+              <a href={post.link} target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="sm">Đọc bài viết</Button>
+              </a>
             </div>
           </div>
         ))}
@@ -360,7 +361,7 @@ const App = () => {
         <div className="space-y-8">
           <h1 className="text-4xl font-bold text-gray-900">Liên hệ với chúng tôi</h1>
           <p className="text-gray-600">Có câu hỏi về đơn hàng tùy chỉnh? Muốn hợp tác? Gửi tin nhắn cho chúng tôi!</p>
-          
+
           <div className="space-y-4">
             <div className="flex items-center gap-4 text-gray-700">
               <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center text-primary-600">
@@ -415,11 +416,11 @@ const App = () => {
         <div className="grid md:grid-cols-3 gap-6">
           {REVIEWS.map(r => (
             <div key={r.id} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-               <div className="flex text-yellow-400 mb-2">
-                 {[...Array(5)].map((_, i) => <Star key={i} size={16} fill={i < r.rating ? "currentColor" : "none"} className={i < r.rating ? "" : "text-gray-300"} />)}
-               </div>
-               <p className="text-gray-600 mb-4 italic">"{r.comment}"</p>
-               <p className="text-sm font-bold text-gray-900">- {r.user}</p>
+              <div className="flex text-yellow-400 mb-2">
+                {[...Array(5)].map((_, i) => <Star key={i} size={16} fill={i < r.rating ? "currentColor" : "none"} className={i < r.rating ? "" : "text-gray-300"} />)}
+              </div>
+              <p className="text-gray-600 mb-4 italic">"{r.comment}"</p>
+              <p className="text-sm font-bold text-gray-900">- {r.user}</p>
             </div>
           ))}
         </div>
@@ -555,66 +556,66 @@ const App = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Form */}
           <div className="lg:col-span-2 space-y-6">
-             {/* Shipping */}
-             <div className="bg-white p-6 rounded-3xl shadow-sm">
-                <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-                  <MapPin className="text-primary-500"/> Thông tin giao hàng
-                </h2>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <input
-                    className="w-full rounded-xl px-4 py-3 bg-gray-900 text-white placeholder:text-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
-                    placeholder="Họ và tên"
-                  />
-                  <input
-                    className="w-full rounded-xl px-4 py-3 bg-gray-900 text-white placeholder:text-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
-                    placeholder="Số điện thoại"
-                  />
-                  <input
-                    className="w-full rounded-xl px-4 py-3 bg-gray-900 text-white placeholder:text-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200 md:col-span-2"
-                    placeholder="Địa chỉ (Miễn phí ship < 1km Bách Khoa!)"
-                  />
-                </div>
-             </div>
-             
-             {/* Message */}
-             <div className="bg-white p-6 rounded-3xl shadow-sm">
-                <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-                  <Heart className="text-primary-500"/> Thư viết tay
-                </h2>
-                <textarea
-                  className="w-full rounded-xl px-4 py-3 h-32 bg-gray-900 text-white placeholder:text-gray-400 border border-gray-700 focus:ring-2 focus:ring-primary-200 focus:outline-none"
-                  placeholder="Viết lời nhắn ngọt ngào của bạn ở đây. Chúng tôi sẽ viết tay lên một tấm thiệp đáng yêu! (Tối đa 100 từ)"
+            {/* Shipping */}
+            <div className="bg-white p-6 rounded-3xl shadow-sm">
+              <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+                <MapPin className="text-primary-500" /> Thông tin giao hàng
+              </h2>
+              <div className="grid md:grid-cols-2 gap-4">
+                <input
+                  className="w-full rounded-xl px-4 py-3 bg-gray-900 text-white placeholder:text-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
+                  placeholder="Họ và tên"
                 />
-             </div>
+                <input
+                  className="w-full rounded-xl px-4 py-3 bg-gray-900 text-white placeholder:text-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
+                  placeholder="Số điện thoại"
+                />
+                <input
+                  className="w-full rounded-xl px-4 py-3 bg-gray-900 text-white placeholder:text-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200 md:col-span-2"
+                  placeholder="Địa chỉ (Miễn phí ship < 1km Bách Khoa!)"
+                />
+              </div>
+            </div>
+
+            {/* Message */}
+            <div className="bg-white p-6 rounded-3xl shadow-sm">
+              <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+                <Heart className="text-primary-500" /> Thư viết tay
+              </h2>
+              <textarea
+                className="w-full rounded-xl px-4 py-3 h-32 bg-gray-900 text-white placeholder:text-gray-400 border border-gray-700 focus:ring-2 focus:ring-primary-200 focus:outline-none"
+                placeholder="Viết lời nhắn ngọt ngào của bạn ở đây. Chúng tôi sẽ viết tay lên một tấm thiệp đáng yêu! (Tối đa 100 từ)"
+              />
+            </div>
           </div>
 
           {/* Summary */}
           <div className="lg:col-span-1">
-             <div className="bg-white p-6 rounded-3xl shadow-sm sticky top-24">
-                <h2 className="text-xl font-bold mb-4">Tóm tắt đơn hàng</h2>
-                <div className="space-y-4 mb-4">
-                  {cart.map(item => (
-                    <div key={item.id} className="flex justify-between items-center text-sm">
-                       <span className="text-gray-600">{item.quantity}x {item.name}</span>
-                       <span className="font-medium">{(item.price * item.quantity).toLocaleString('vi-VN')}₫</span>
-                    </div>
-                  ))}
+            <div className="bg-white p-6 rounded-3xl shadow-sm sticky top-24">
+              <h2 className="text-xl font-bold mb-4">Tóm tắt đơn hàng</h2>
+              <div className="space-y-4 mb-4">
+                {cart.map(item => (
+                  <div key={item.id} className="flex justify-between items-center text-sm">
+                    <span className="text-gray-600">{item.quantity}x {item.name}</span>
+                    <span className="font-medium">{(item.price * item.quantity).toLocaleString('vi-VN')}₫</span>
+                  </div>
+                ))}
+              </div>
+              <div className="border-t pt-4 space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Tạm tính</span>
+                  <span>{cartTotal.toLocaleString('vi-VN')}₫</span>
                 </div>
-                <div className="border-t pt-4 space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Tạm tính</span>
-                    <span>{cartTotal.toLocaleString('vi-VN')}₫</span>
-                  </div>
-                  <div className="flex justify-between text-green-600">
-                    <span className="text-gray-500">Phí giao hàng</span>
-                    <span>Miễn phí</span>
-                  </div>
-                  <div className="flex justify-between text-xl font-bold text-primary-600 mt-2">
-                    <span>Tổng cộng</span>
-                    <span>{cartTotal.toLocaleString('vi-VN')}₫</span>
-                  </div>
+                <div className="flex justify-between text-green-600">
+                  <span className="text-gray-500">Phí giao hàng</span>
+                  <span>Miễn phí</span>
                 </div>
-             </div>
+                <div className="flex justify-between text-xl font-bold text-primary-600 mt-2">
+                  <span>Tổng cộng</span>
+                  <span>{cartTotal.toLocaleString('vi-VN')}₫</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Confirm */}
@@ -638,10 +639,10 @@ const App = () => {
       <div className={`absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity ${isCartOpen ? 'opacity-100' : 'opacity-0'}`} onClick={() => setIsCartOpen(false)} />
       <div className={`relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col transition-transform duration-300 ${isCartOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="p-6 border-b flex justify-between items-center bg-primary-50">
-          <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2"><ShoppingBag size={20}/> Giỏ hàng của bạn</h2>
-          <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-white rounded-full transition-colors"><X size={20}/></button>
+          <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2"><ShoppingBag size={20} /> Giỏ hàng của bạn</h2>
+          <button onClick={() => setIsCartOpen(false)} className="p-2 hover:bg-white rounded-full transition-colors"><X size={20} /></button>
         </div>
-        
+
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
           {cart.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-gray-400 space-y-4">
@@ -690,12 +691,12 @@ const App = () => {
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => setView('home')}>
-             <div className="bg-primary-500 text-white p-2 rounded-xl">
-               <Package size={20} />
-             </div>
-             <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-primary-400" style={{ fontFamily: 'Quicksand, sans-serif' }}>
-               Boxie Gift
-             </span>
+            <div className="bg-primary-500 text-white p-2 rounded-xl">
+              <Package size={20} />
+            </div>
+            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-primary-400" style={{ fontFamily: 'Quicksand, sans-serif' }}>
+              Boxie Gift
+            </span>
           </div>
 
           {/* Desktop Nav */}
@@ -754,7 +755,7 @@ const App = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-4">
-            <button 
+            <button
               className="relative p-2 text-gray-600 hover:text-primary-600 transition-colors"
               onClick={() => setIsCartOpen(true)}
             >
@@ -766,7 +767,7 @@ const App = () => {
               )}
             </button>
             <button className="md:hidden p-2 text-gray-600" onClick={() => { setIsMobileMenuOpen(v => !v); setIsPartnersOpen(false); }}>
-              {isMobileMenuOpen ? <X size={24}/> : <Menu size={24}/>}
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
@@ -878,12 +879,12 @@ const App = () => {
             <div>
               <h4 className="font-bold mb-4">Thông tin giao hàng</h4>
               <p className="text-sm text-gray-500 flex items-start gap-2">
-                 <Truck size={16} className="mt-1 shrink-0" />
-                 Miễn phí giao hàng khu vực Đại học Bách Khoa!
+                <Truck size={16} className="mt-1 shrink-0" />
+                Miễn phí giao hàng khu vực Đại học Bách Khoa!
               </p>
               <p className="text-sm text-gray-500 flex items-start gap-2 mt-2">
-                 <Clock size={16} className="mt-1 shrink-0" />
-                 Giao ngay trong ngày
+                <Clock size={16} className="mt-1 shrink-0" />
+                Giao ngay trong ngày
               </p>
             </div>
           </div>

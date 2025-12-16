@@ -60,6 +60,6 @@ export const REVIEWS: Review[] = [
 ];
 
 export const BLOG_POSTS: BlogPost[] = [
-  { id: '1', title: 'Top 5 Quà Tặng Cho Crush', excerpt: 'Đang đau đầu tìm món quà hoàn hảo? Đây là những lựa chọn hàng đầu của chúng tôi...', image: 'https://picsum.photos/seed/blog1/600/300', date: 'Oct 15' },
-  { id: '2', title: 'Hướng Dẫn Gói Quà DIY', excerpt: 'Cách gói quà của bạn để trông như đến từ chuyên gia.', image: 'https://picsum.photos/seed/blog2/600/300', date: 'Oct 10' },
+  { id: '1', title: 'Top 5 Quà Tặng Cho Crush', excerpt: 'Đang đau đầu tìm món quà hoàn hảo? Đây là những lựa chọn hàng đầu của chúng tôi...', image: 'https://picsum.photos/seed/blog1/600/300', date: 'Oct 15', link: 'https://www.facebook.com/share/p/17Z1LLYVSw/' },
+  { id: '2', title: 'Hướng Dẫn Gói Quà DIY', excerpt: 'Cách gói quà của bạn để trông như đến từ chuyên gia.', image: 'https://picsum.photos/seed/blog2/600/300', date: 'Oct 10', link: 'https://www.facebook.com/share/p/1ZkJUxjDuh/' },
 ];
