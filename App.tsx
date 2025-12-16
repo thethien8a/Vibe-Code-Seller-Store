@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ShoppingBag, Menu, X, Heart, Star, MapPin, Phone, Mail, Facebook, ArrowRight, Truck, CheckCircle, Clock, ChevronDown, ExternalLink, Package } from 'lucide-react';
+import { ShoppingBag, Menu, X, Heart, Star, MapPin, Phone, Mail, Facebook, ArrowRight, Truck, CheckCircle, Clock, ChevronDown, ExternalLink, Package, CreditCard } from 'lucide-react';
 import { Product, CartItem, ViewState } from './types';
 import { PRODUCTS, BLOG_POSTS, REVIEWS } from './constants';
 import { ProductCard } from './components/ProductCard';
@@ -608,6 +608,7 @@ const App = () => {
       address: '',
       note: ''
     });
+    const [paymentMethod, setPaymentMethod] = React.useState<'cod' | 'banking'>('cod');
     const [errors, setErrors] = React.useState({
       name: '',
       phone: '',
@@ -672,6 +673,7 @@ const App = () => {
           'Địa chỉ': formData.address,
           'Đơn hàng': itemsList,
           'Tổng tiền': total,
+          'Phương thức thanh toán': paymentMethod === 'cod' ? 'Thanh toán khi nhận hàng (COD)' : 'Chuyển khoản ngân hàng',
           'Lời nhắn': formData.note || 'Không có'
         };
 
@@ -761,6 +763,68 @@ const App = () => {
                 className="w-full rounded-xl px-4 py-3 h-32 bg-gray-900 text-white placeholder:text-gray-400 border border-gray-700 focus:ring-2 focus:ring-primary-200 focus:outline-none"
                 placeholder="Viết lời nhắn ngọt ngào của bạn ở đây. Chúng tôi sẽ viết tay lên một tấm thiệp đáng yêu! (Tối đa 100 từ)"
               />
+            </div>
+
+            {/* Payment Method */}
+            <div className="bg-white p-6 rounded-3xl shadow-sm">
+              <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+                <CreditCard className="text-primary-500" /> Phương thức thanh toán
+              </h2>
+              <div className="space-y-4">
+                <label className={`flex items-start gap-3 p-4 border rounded-2xl cursor-pointer transition-all ${paymentMethod === 'cod' ? 'border-primary-500 bg-primary-50/50' : 'border-gray-200 hover:border-gray-300'}`}>
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="cod"
+                    checked={paymentMethod === 'cod'}
+                    onChange={() => setPaymentMethod('cod')}
+                    className="mt-1 w-4 h-4 text-primary-600 focus:ring-primary-500"
+                  />
+                  <div>
+                    <span className="font-bold text-gray-900 block">Thanh toán khi nhận hàng (COD)</span>
+                    <span className="text-sm text-gray-500">Thanh toán tiền mặt cho shipper khi nhận được quà.</span>
+                  </div>
+                </label>
+
+                <label className={`flex items-start gap-3 p-4 border rounded-2xl cursor-pointer transition-all ${paymentMethod === 'banking' ? 'border-primary-500 bg-primary-50/50' : 'border-gray-200 hover:border-gray-300'}`}>
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="banking"
+                    checked={paymentMethod === 'banking'}
+                    onChange={() => setPaymentMethod('banking')}
+                    className="mt-1 w-4 h-4 text-primary-600 focus:ring-primary-500"
+                  />
+                  <div>
+                    <span className="font-bold text-gray-900 block">Chuyển khoản ngân hàng</span>
+                    <span className="text-sm text-gray-500">Quét mã QR để chuyển khoản nhanh chóng.</span>
+                  </div>
+                </label>
+
+                {paymentMethod === 'banking' && (
+                  <div className="mt-4 p-6 bg-gray-50 rounded-2xl border border-gray-200 text-center animate-in fade-in slide-in-from-top-2 duration-300">
+                    <p className="font-bold text-gray-800 mb-4">Quét mã để thanh toán</p>
+                    <div className="bg-white p-3 rounded-xl border inline-block shadow-sm">
+                      <img
+                        src="/images/qr-banking.png"
+                        alt="QR Thanh toán"
+                        className="w-48 h-48 object-contain"
+                      />
+                    </div>
+                    <div className="mt-4 space-y-2 text-sm">
+                      <p className="text-gray-600">
+                        Nội dung chuyển khoản: <br />
+                        <strong className="text-primary-700 text-lg bg-primary-50 px-2 py-1 rounded-md mt-1 inline-block border border-primary-100">
+                          {formData.phone || 'SĐT_CUA_BAN'}
+                        </strong>
+                      </p>
+                      <p className="text-red-500 italic text-xs mt-2">
+                        *Sau khi chuyển khoản, vui lòng bấm nút "Xác nhận đơn hàng" bên dưới.
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
