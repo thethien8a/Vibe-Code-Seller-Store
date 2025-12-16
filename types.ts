@@ -24,7 +24,8 @@ export type ViewState =
   | 'product-detail'
   | 'shipping-policy'
   | 'returns'
-  | 'faq';
+  | 'faq'
+  | 'privacy-policy';
 
 export interface Review {
   id: string;

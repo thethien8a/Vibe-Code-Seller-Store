@@ -277,8 +277,8 @@ const App = () => {
             key={cat}
             onClick={() => { setFilterCategory(cat); setFilterMaxPrice(null); }}
             className={`px-6 py-2 rounded-full text-sm font-bold capitalize transition-all ${filterCategory === cat
-                ? 'bg-primary-500 text-white shadow-lg shadow-primary-200'
-                : 'bg-white text-gray-600 hover:bg-gray-50'
+              ? 'bg-primary-500 text-white shadow-lg shadow-primary-200'
+              : 'bg-white text-gray-600 hover:bg-gray-50'
               }`}
           >
             {cat}
@@ -549,7 +549,159 @@ const App = () => {
     </div>
   );
 
+  const PrivacyPolicyView = () => (
+    <div className="container mx-auto px-6 py-12 max-w-4xl space-y-10 min-h-screen">
+      <div className="text-center space-y-3">
+        <h1 className="text-4xl font-bold text-gray-900">Chính sách bảo mật</h1>
+        <p className="text-gray-600">
+          Boxie Gift cam kết bảo mật thông tin của bạn. Chúng tôi chỉ sử dụng thông tin để xử lý đơn hàng.
+        </p>
+      </div>
+
+      <div className="bg-white p-8 rounded-3xl shadow-sm border border-primary-50 space-y-6 text-gray-700 leading-relaxed">
+        <h3 className="text-2xl font-bold text-gray-900">1. Thu thập thông tin</h3>
+        <p>
+          Chúng tôi chỉ thu thập các thông tin cần thiết để xử lý đơn hàng của bạn, bao gồm:
+        </p>
+        <ul className="list-disc list-inside space-y-2 pl-4">
+          <li>Tên người nhận</li>
+          <li>Số điện thoại liên hệ</li>
+          <li>Địa chỉ giao hàng</li>
+          <li>Nội dung lời nhắn (nếu có)</li>
+        </ul>
+
+        <h3 className="text-2xl font-bold text-gray-900 mt-8">2. Sử dụng thông tin</h3>
+        <p>
+          Thông tin của bạn được sử dụng để:
+        </p>
+        <ul className="list-disc list-inside space-y-2 pl-4">
+          <li>Xử lý và giao đơn hàng.</li>
+          <li>Liên hệ xác nhận hoặc thông báo tình trạng đơn hàng.</li>
+          <li>Hỗ trợ đổi trả hoặc bảo hành sản phẩm.</li>
+        </ul>
+        <p>
+          Chúng tôi <strong>không</strong> chia sẻ thông tin của bạn cho bất kỳ bên thứ ba nào khác, ngoại trừ đơn vị vận chuyển (nếu cần thiết để giao hàng).
+        </p>
+
+        <h3 className="text-2xl font-bold text-gray-900 mt-8">3. Lưu trữ & Bảo mật</h3>
+        <p>
+          Thông tin đơn hàng được lưu trữ an toàn và chỉ nhân viên có thẩm quyền mới được tiếp cận để xử lý đơn hàng.
+        </p>
+
+        <h3 className="text-2xl font-bold text-gray-900 mt-8">4. Quyền lợi khách hàng</h3>
+        <p>
+          Bạn có quyền yêu cầu chúng tôi kiểm tra, chỉnh sửa hoặc xóa thông tin cá nhân của bạn bất cứ lúc nào bằng cách liên hệ qua Email hoặc Fanpage.
+        </p>
+      </div>
+
+      <div className="flex flex-wrap justify-center gap-3">
+        <Button variant="outline" onClick={() => setView('shop')}>Xem sản phẩm</Button>
+        <Button onClick={() => setView('contact')}>Liên hệ</Button>
+      </div>
+    </div>
+  );
+
   const CheckoutView = () => {
+    const [formData, setFormData] = React.useState({
+      name: '',
+      phone: '',
+      address: '',
+      note: ''
+    });
+    const [errors, setErrors] = React.useState({
+      name: '',
+      phone: '',
+      address: ''
+    });
+
+    const validatePhone = (phone: string) => {
+      const vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
+      return vnf_regex.test(phone);
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const { name, value } = e.target;
+      setFormData(prev => ({ ...prev, [name]: value }));
+      if (errors[name as keyof typeof errors]) {
+        setErrors(prev => ({ ...prev, [name]: '' }));
+      }
+    };
+
+    const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+    const handleCheckout = async () => {
+      const newErrors = {
+        name: '',
+        phone: '',
+        address: ''
+      };
+      let isValid = true;
+
+      if (!formData.name.trim()) {
+        newErrors.name = 'Vui lòng nhập họ tên';
+        isValid = false;
+      }
+
+      if (!formData.phone.trim()) {
+        newErrors.phone = 'Vui lòng nhập số điện thoại';
+        isValid = false;
+      } else if (!validatePhone(formData.phone)) {
+        newErrors.phone = 'Số điện thoại không hợp lệ (VD: 0912345678)';
+        isValid = false;
+      }
+
+      if (!formData.address.trim()) {
+        newErrors.address = 'Vui lòng nhập địa chỉ nhận hàng';
+        isValid = false;
+      }
+
+      setErrors(newErrors);
+
+      if (isValid) {
+        setIsSubmitting(true);
+        // Prepare data for FormSubmit
+        const itemsList = cart.map(item => `${item.name} (x${item.quantity}) - ${(item.price * item.quantity).toLocaleString('vi-VN')}d`).join('\n');
+        const total = cartTotal.toLocaleString('vi-VN') + 'd';
+
+        const dataToSend = {
+          _subject: `Đơn hàng mới từ ${formData.name} - ${formData.phone}`,
+          _template: 'table', // FormSubmit formats this nicely
+          _captcha: 'false', // Disable captcha for cleaner UX
+          'Tên khách hàng': formData.name,
+          'Số điện thoại': formData.phone,
+          'Địa chỉ': formData.address,
+          'Đơn hàng': itemsList,
+          'Tổng tiền': total,
+          'Lời nhắn': formData.note || 'Không có'
+        };
+
+        try {
+          const response = await fetch('https://formsubmit.co/ajax/boxiegiftbox@gmail.com', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(dataToSend)
+          });
+
+          if (response.ok) {
+            alert("Đặt hàng thành công! Chúng tôi đã nhận được đơn của bạn và sẽ liên hệ sớm.");
+            // Reset form and potentially clear cart here
+            setFormData({ name: '', phone: '', address: '', note: '' });
+            // Optional: clearCart(); setView('home'); via props if needed, but for now just stay or go back
+          } else {
+            alert("Có lỗi xảy ra khi gửi đơn hàng. Vui lòng thử lại hoặc liên hệ trực tiếp qua SĐT/Fagepage.");
+          }
+        } catch (error) {
+          console.error("Lỗi gửi đơn:", error);
+          alert("Không thể kết nối. Vui lòng kiểm tra mạng hoặc liên hệ trực tiếp.");
+        } finally {
+          setIsSubmitting(false);
+        }
+      }
+    };
+
     return (
       <div className="container mx-auto px-6 py-12 min-h-screen bg-gray-50">
         <h1 className="text-3xl font-bold text-center mb-10">Thanh toán</h1>
@@ -562,18 +714,38 @@ const App = () => {
                 <MapPin className="text-primary-500" /> Thông tin giao hàng
               </h2>
               <div className="grid md:grid-cols-2 gap-4">
-                <input
-                  className="w-full rounded-xl px-4 py-3 bg-gray-900 text-white placeholder:text-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
-                  placeholder="Họ và tên"
-                />
-                <input
-                  className="w-full rounded-xl px-4 py-3 bg-gray-900 text-white placeholder:text-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200"
-                  placeholder="Số điện thoại"
-                />
-                <input
-                  className="w-full rounded-xl px-4 py-3 bg-gray-900 text-white placeholder:text-gray-400 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-200 md:col-span-2"
-                  placeholder="Địa chỉ (Miễn phí ship < 1km Bách Khoa!)"
-                />
+                <div className="space-y-1">
+                  <input
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className={`w-full rounded-xl px-4 py-3 bg-gray-900 text-white placeholder:text-gray-400 border focus:outline-none focus:ring-2 focus:ring-primary-200 ${errors.name ? 'border-red-500' : 'border-gray-700'}`}
+                    placeholder="Họ và tên"
+                  />
+                  {errors.name && <p className="text-red-500 text-xs ml-1">{errors.name}</p>}
+                </div>
+
+                <div className="space-y-1">
+                  <input
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                    className={`w-full rounded-xl px-4 py-3 bg-gray-900 text-white placeholder:text-gray-400 border focus:outline-none focus:ring-2 focus:ring-primary-200 ${errors.phone ? 'border-red-500' : 'border-gray-700'}`}
+                    placeholder="Số điện thoại"
+                  />
+                  {errors.phone && <p className="text-red-500 text-xs ml-1">{errors.phone}</p>}
+                </div>
+
+                <div className="space-y-1 md:col-span-2">
+                  <input
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    className={`w-full rounded-xl px-4 py-3 bg-gray-900 text-white placeholder:text-gray-400 border focus:outline-none focus:ring-2 focus:ring-primary-200 ${errors.address ? 'border-red-500' : 'border-gray-700'}`}
+                    placeholder="Địa chỉ (Miễn phí ship < 1km Bách Khoa!)"
+                  />
+                  {errors.address && <p className="text-red-500 text-xs ml-1">{errors.address}</p>}
+                </div>
               </div>
             </div>
 
@@ -583,6 +755,9 @@ const App = () => {
                 <Heart className="text-primary-500" /> Thư viết tay
               </h2>
               <textarea
+                name="note"
+                value={formData.note}
+                onChange={handleInputChange}
                 className="w-full rounded-xl px-4 py-3 h-32 bg-gray-900 text-white placeholder:text-gray-400 border border-gray-700 focus:ring-2 focus:ring-primary-200 focus:outline-none"
                 placeholder="Viết lời nhắn ngọt ngào của bạn ở đây. Chúng tôi sẽ viết tay lên một tấm thiệp đáng yêu! (Tối đa 100 từ)"
               />
@@ -622,10 +797,11 @@ const App = () => {
           <div className="lg:col-span-2">
             <Button
               size="lg"
-              className="w-full"
-              onClick={() => alert("Đặt hàng thành công! Chúng tôi sẽ liên hệ với bạn sớm.")}
+              className="w-full disabled:opacity-70 disabled:cursor-not-allowed"
+              onClick={handleCheckout}
+              disabled={isSubmitting}
             >
-              Xác nhận đơn hàng
+              {isSubmitting ? 'Đang xử lý...' : 'Xác nhận đơn hàng'}
             </Button>
           </div>
         </div>
@@ -833,6 +1009,7 @@ const App = () => {
         {view === 'shipping-policy' && <ShippingPolicyView />}
         {view === 'returns' && <ReturnsView />}
         {view === 'faq' && <FAQView />}
+        {view === 'privacy-policy' && <PrivacyPolicyView />}
         {view === 'checkout' && <CheckoutView />}
       </main>
 
@@ -873,6 +1050,7 @@ const App = () => {
               <ul className="space-y-2 text-sm text-gray-500">
                 <li onClick={() => setView('shipping-policy')} className="cursor-pointer hover:text-primary-500">Chính sách giao hàng</li>
                 <li onClick={() => setView('returns')} className="cursor-pointer hover:text-primary-500">Đổi trả</li>
+                <li onClick={() => setView('privacy-policy')} className="cursor-pointer hover:text-primary-500">Chính sách bảo mật</li>
                 <li onClick={() => setView('faq')} className="cursor-pointer hover:text-primary-500">Câu hỏi thường gặp</li>
               </ul>
             </div>
