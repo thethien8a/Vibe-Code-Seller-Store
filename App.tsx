@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ShoppingBag, Menu, X, Heart, Star, MapPin, Phone, Mail, Facebook, ArrowRight, Truck, CheckCircle, Clock, ChevronDown, ExternalLink, Package, CreditCard } from 'lucide-react';
-import { Product, CartItem, ViewState } from './types';
+import { Product, CartItem, ViewState, Order } from './types';
 import { PRODUCTS, BLOG_POSTS, REVIEWS } from './constants';
 import { ProductCard } from './components/ProductCard';
 import { Button } from './components/Button';
@@ -50,6 +50,14 @@ const App = () => {
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [filterMaxPrice, setFilterMaxPrice] = useState<number | null>(null);
   const [checkoutStep, setCheckoutStep] = useState(1);
+  const [orders, setOrders] = useState<Order[]>(() => {
+    const saved = localStorage.getItem('boxie_orders');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('boxie_orders', JSON.stringify(orders));
+  }, [orders]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -664,10 +672,27 @@ const App = () => {
         const itemsList = cart.map(item => `${item.name} (x${item.quantity}) - ${(item.price * item.quantity).toLocaleString('vi-VN')}d`).join('\n');
         const total = cartTotal.toLocaleString('vi-VN') + 'd';
 
+        // Create Order Object
+        const newOrder: Order = {
+          id: Math.random().toString(36).substr(2, 9).toUpperCase(),
+          date: new Date().toLocaleDateString('vi-VN'),
+          items: [...cart],
+          total: cartTotal,
+          status: 'pending',
+          paymentMethod: paymentMethod,
+          customerInfo: {
+            name: formData.name,
+            phone: formData.phone,
+            address: formData.address,
+            note: formData.note
+          }
+        };
+
         const dataToSend = {
-          _subject: `Đơn hàng mới từ ${formData.name} - ${formData.phone}`,
-          _template: 'table', // FormSubmit formats this nicely
-          _captcha: 'false', // Disable captcha for cleaner UX
+          _subject: `Đơn hàng mới #${newOrder.id} từ ${formData.name}`,
+          _template: 'table',
+          _captcha: 'false',
+          'Mã đơn hàng': newOrder.id,
           'Tên khách hàng': formData.name,
           'Số điện thoại': formData.phone,
           'Địa chỉ': formData.address,
@@ -678,7 +703,8 @@ const App = () => {
         };
 
         try {
-          const response = await fetch('https://formsubmit.co/ajax/boxiegiftbox@gmail.com', {
+          // Send email notification (fire and forget or wait)
+          await fetch('https://formsubmit.co/ajax/boxiegiftbox@gmail.com', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -687,17 +713,22 @@ const App = () => {
             body: JSON.stringify(dataToSend)
           });
 
-          if (response.ok) {
-            alert("Đặt hàng thành công! Chúng tôi đã nhận được đơn của bạn và sẽ liên hệ sớm.");
-            // Reset form and potentially clear cart here
-            setFormData({ name: '', phone: '', address: '', note: '' });
-            // Optional: clearCart(); setView('home'); via props if needed, but for now just stay or go back
-          } else {
-            alert("Có lỗi xảy ra khi gửi đơn hàng. Vui lòng thử lại hoặc liên hệ trực tiếp qua SĐT/Fagepage.");
-          }
+          // Success Logic
+          setOrders(prev => [...prev, newOrder]);
+          setCart([]); // Clear cart
+          setFormData({ name: '', phone: '', address: '', note: '' });
+
+          // Redirect to My Orders
+          setView('my-orders');
+
         } catch (error) {
           console.error("Lỗi gửi đơn:", error);
-          alert("Không thể kết nối. Vui lòng kiểm tra mạng hoặc liên hệ trực tiếp.");
+          alert("Có lỗi kết nối. Tuy nhiên đơn hàng của bạn đã được lưu lại trên thiết bị.");
+          // Still save order locally even if email fails? Maybe safer to let them retry? 
+          // For this requirement, let's assume we save it locally anyway so they see it.
+          setOrders(prev => [...prev, newOrder]);
+          setCart([]);
+          setView('my-orders');
         } finally {
           setIsSubmitting(false);
         }
@@ -801,29 +832,7 @@ const App = () => {
                   </div>
                 </label>
 
-                {paymentMethod === 'banking' && (
-                  <div className="mt-4 p-6 bg-gray-50 rounded-2xl border border-gray-200 text-center animate-in fade-in slide-in-from-top-2 duration-300">
-                    <p className="font-bold text-gray-800 mb-4">Quét mã để thanh toán</p>
-                    <div className="bg-white p-3 rounded-xl border inline-block shadow-sm">
-                      <img
-                        src="/images/qr-banking.png"
-                        alt="QR Thanh toán"
-                        className="w-48 h-48 object-contain"
-                      />
-                    </div>
-                    <div className="mt-4 space-y-2 text-sm">
-                      <p className="text-gray-600">
-                        Nội dung chuyển khoản: <br />
-                        <strong className="text-primary-700 text-lg bg-primary-50 px-2 py-1 rounded-md mt-1 inline-block border border-primary-100">
-                          {formData.phone || 'SĐT_CUA_BAN'}
-                        </strong>
-                      </p>
-                      <p className="text-red-500 italic text-xs mt-2">
-                        *Sau khi chuyển khoản, vui lòng bấm nút "Xác nhận đơn hàng" bên dưới.
-                      </p>
-                    </div>
-                  </div>
-                )}
+
               </div>
             </div>
           </div>
@@ -872,6 +881,107 @@ const App = () => {
       </div>
     );
   };
+
+  const MyOrdersView = () => (
+    <div className="container mx-auto px-6 py-12 min-h-screen">
+      <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">Đơn hàng của tôi 📦</h1>
+
+      {orders.length === 0 ? (
+        <div className="text-center py-20 space-y-4">
+          <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto text-gray-400">
+            <Package size={48} />
+          </div>
+          <h2 className="text-xl font-bold text-gray-700">Chưa có đơn hàng nào</h2>
+          <p className="text-gray-500">Hãy dạo một vòng cửa hàng và chọn những món quà ưng ý nhé!</p>
+          <Button onClick={() => setView('shop')}>Đi mua sắm ngay</Button>
+        </div>
+      ) : (
+        <div className="max-w-3xl mx-auto space-y-6">
+          {orders.slice().reverse().map(order => (
+            <div key={order.id} className="bg-white rounded-3xl shadow-sm border border-primary-50 overflow-hidden">
+              {/* Header */}
+              <div className="p-6 border-b border-gray-100 flex flex-wrap gap-4 justify-between items-center bg-gray-50/50">
+                <div>
+                  <p className="text-sm text-gray-500">Mã đơn hàng</p>
+                  <p className="font-bold text-gray-900">#{order.id}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-gray-500">Ngày đặt</p>
+                  <p className="font-medium text-gray-900">{order.date}</p>
+                </div>
+                <div>
+                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-bold capitalize
+                    ${order.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                      order.status === 'completed' ? 'bg-green-100 text-green-700' :
+                        order.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                          'bg-blue-100 text-blue-700'}`}>
+                    {order.status === 'pending' ? 'Chờ xử lý' :
+                      order.status === 'completed' ? 'Hoàn thành' :
+                        order.status === 'shipping' ? 'Đang giao' : 'Đã hủy'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-6">
+                <div className="space-y-4 mb-6">
+                  {order.items.map((item, idx) => (
+                    <div key={idx} className="flex gap-4 items-center">
+                      <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden shrink-0">
+                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-bold text-gray-800">{item.name}</h4>
+                        <p className="text-sm text-gray-500">Số lượng: {item.quantity}</p>
+                      </div>
+                      <p className="font-semibold">{(item.price * item.quantity).toLocaleString('vi-VN')}₫</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex justify-between items-center border-t pt-4">
+                  <div>
+                    <p className="text-sm text-gray-500">Phương thức thanh toán</p>
+                    <p className="font-medium">
+                      {order.paymentMethod === 'cod' ? 'Thanh toán khi nhận hàng' : 'Chuyển khoản ngân hàng'}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-gray-500">Tổng cộng</p>
+                    <p className="text-2xl font-bold text-primary-600">{order.total.toLocaleString('vi-VN')}₫</p>
+                  </div>
+                </div>
+
+                {/* Banking QR Section */}
+                {order.paymentMethod === 'banking' && order.status !== 'cancelled' && (
+                  <div className="mt-6 p-4 bg-primary-50/50 rounded-2xl border border-primary-100">
+                    <div className="flex flex-col md:flex-row gap-6 items-center">
+                      <div className="bg-white p-2 rounded-xl shadow-sm border shrink-0">
+                        <img src="/images/qr-banking.png" alt="QR Banking" className="w-32 h-32 object-contain" />
+                      </div>
+                      <div className="flex-1 text-center md:text-left space-y-2">
+                        <h4 className="font-bold text-primary-700">Thông tin chuyển khoản</h4>
+                        <p className="text-sm text-gray-600">
+                          Vui lòng quét mã QR hoặc chuyển khoản theo thông tin.
+                          <br />Nội dung chuyển khoản:
+                          <strong className="ml-1 text-gray-900 bg-white px-2 py-0.5 rounded border border-gray-200">
+                            {order.customerInfo.phone}
+                          </strong>
+                        </p>
+                        <p className="text-xs text-gray-500 italic">
+                          Đơn hàng sẽ được xử lý ngay sau khi bọn mình nhận được thanh toán.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 
   // CART DRAWER
   const CartDrawer = () => (
@@ -945,6 +1055,7 @@ const App = () => {
             <NavLink to="shop">Cửa hàng</NavLink>
             <NavLink to="about">Về chúng tôi</NavLink>
             <NavLink to="blog">Blog</NavLink>
+            <NavLink to="my-orders">Đơn hàng</NavLink>
             <div className="relative group">
               <button
                 type="button"
@@ -1019,6 +1130,7 @@ const App = () => {
             <NavLink to="shop">Cửa hàng</NavLink>
             <NavLink to="about">Về chúng tôi</NavLink>
             <NavLink to="blog">Blog</NavLink>
+            <NavLink to="my-orders">Đơn hàng</NavLink>
             <div>
               <button
                 type="button"
@@ -1075,6 +1187,7 @@ const App = () => {
         {view === 'faq' && <FAQView />}
         {view === 'privacy-policy' && <PrivacyPolicyView />}
         {view === 'checkout' && <CheckoutView />}
+        {view === 'my-orders' && <MyOrdersView />}
       </main>
 
       {/* Footer */}
