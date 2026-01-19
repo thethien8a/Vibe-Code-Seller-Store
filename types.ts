@@ -14,6 +14,22 @@ export interface CartItem extends Product {
   note?: string; // For customization details
 }
 
+
+export interface Order {
+  id: string;
+  date: string;
+  items: CartItem[];
+  total: number;
+  status: 'pending' | 'shipping' | 'completed' | 'cancelled';
+  paymentMethod: 'cod' | 'banking';
+  customerInfo: {
+    name: string;
+    phone: string;
+    address: string;
+    note: string;
+  };
+}
+
 export type ViewState =
   | 'home'
   | 'shop'
@@ -25,7 +41,8 @@ export type ViewState =
   | 'shipping-policy'
   | 'returns'
   | 'faq'
-  | 'privacy-policy';
+  | 'privacy-policy'
+  | 'my-orders';
 
 export interface Review {
   id: string;
